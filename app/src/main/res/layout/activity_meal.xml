@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MealActivity"
+    android:background="@color/white">
+
+    <ImageView
+        android:id="@+id/imageView_meal"
+        android:layout_width="0dp"
+        android:layout_height="250dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/backgounrd2" />
+
+    <TextView
+        android:id="@+id/textView_name_meal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="TextView"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/textView_price_meal"
+        app:layout_constraintEnd_toStartOf="@+id/textView_price_meal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView_price_meal" />
+
+    <TextView
+
+        android:id="@+id/textView_price_meal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:text="TextView"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_meal" />
+
+    <EditText
+        android:background="@color/white"
+        android:id="@+id/editText_note_meal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="Note"
+        android:inputType="textPersonName"
+        android:textColorHint="#4AC3AB"
+        android:textColor="#4AC3AB"
+        app:layout_constraintEnd_toEndOf="@+id/textView_price_meal"
+        app:layout_constraintStart_toStartOf="@+id/textView_name_meal"
+        app:layout_constraintTop_toBottomOf="@+id/textView_name_meal" />
+
+    <LinearLayout
+        android:id="@+id/btn_add_meal"
+        android:layout_width="200dp"
+        android:layout_height="50dp"
+
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/rounded_button_add_meal"
+        android:orientation="horizontal"
+
+        android:weightSum="2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/editText_note_meal">
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="Add"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView_total_meal"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="TextView"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/imageButton_sub_meal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_add_meal"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/btn_add_meal"
+        app:srcCompat="@drawable/ic_remove"
+        android:padding="5dp"
+        tools:ignore="VectorDrawableCompat"
+        android:background="@drawable/btn_disable"
+        app:tint="#EEEEEE" />
+
+    <TextView
+        android:id="@+id/textView_qty_meal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:text="1"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton_sub_meal"
+        app:layout_constraintStart_toEndOf="@+id/imageButton_sub_meal"
+        app:layout_constraintTop_toTopOf="@+id/imageButton_sub_meal" />
+
+    <ImageButton
+
+        android:id="@+id/imageButton_add_meal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+
+        app:layout_constraintBottom_toBottomOf="@+id/btn_add_meal"
+        app:layout_constraintStart_toEndOf="@+id/textView_qty_meal"
+        app:layout_constraintTop_toTopOf="@+id/btn_add_meal"
+        android:background="@drawable/btn_change_qty_meal"
+        android:padding="5dp"
+        app:srcCompat="@drawable/ic_add"
+        tools:ignore="VectorDrawableCompat"
+        app:tint="#4AC3AB" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imageView_avt_shipper"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/backgounrd2" />
+
+    <TextView
+        android:id="@+id/textView_name_shipper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:text="TextView"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView_avt_shipper"
+        app:layout_constraintStart_toEndOf="@+id/imageView_avt_shipper"
+        app:layout_constraintTop_toTopOf="@+id/imageView_avt_shipper" />
+
+    <ImageButton
+        android:id="@+id/imageButton_location_shipper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/rounded_btn_shipper"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView_name_shipper"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView_name_shipper"
+        app:srcCompat="@drawable/ic_location"
+        app:tint="#4AC3AB"
+        tools:ignore="VectorDrawableCompat" />
+
+    <ImageButton
+        android:id="@+id/imageButton_mess_shipper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/rounded_btn_shipper"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton_location_shipper"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton_location_shipper"
+        app:layout_constraintTop_toTopOf="@+id/imageButton_location_shipper"
+        app:srcCompat="@drawable/ic_message"
+        app:tint="#4AC3AB"
+        tools:ignore="VectorDrawableCompat" />
+
+    <ImageButton
+        android:id="@+id/imageButton_phone_shipper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/rounded_btn_shipper"
+        android:padding="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton_mess_shipper"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton_mess_shipper"
+        app:layout_constraintTop_toTopOf="@+id/imageButton_mess_shipper"
+        app:srcCompat="@drawable/ic_phone"
+        app:tint="#4AC3AB"
+        tools:ignore="VectorDrawableCompat" />
+</androidx.constraintlayout.widget.ConstraintLayout>

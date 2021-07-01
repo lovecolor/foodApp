@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent"
+    tools:context=".EvaluateActivity">
+
+    <ImageButton
+        android:id="@+id/imageButton_rate_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginTop="16dp"
+        android:background="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView_name_evalute"
+        app:srcCompat="@drawable/ic_baseline_star_24"
+
+        app:tint="	#FFD700"
+        tools:ignore="VectorDrawableCompat" />
+
+    <ImageButton
+        android:id="@+id/imageButton_rate_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton_rate_1"
+        app:layout_constraintStart_toEndOf="@+id/imageButton_rate_1"
+        app:layout_constraintTop_toTopOf="@+id/imageButton_rate_1"
+        app:srcCompat="@drawable/ic_baseline_star_24"
+        app:tint="	#FFD700"
+        tools:ignore="VectorDrawableCompat" />
+
+    <ImageButton
+        android:id="@+id/imageButton_rate_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton_rate_1"
+        app:layout_constraintStart_toEndOf="@+id/imageButton_rate_2"
+        app:layout_constraintTop_toTopOf="@+id/imageButton_rate_1"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/ic_baseline_star_24"
+        app:tint="	#FFD700"
+        tools:ignore="VectorDrawableCompat" />
+
+    <ImageButton
+        android:id="@+id/imageButton_rate_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton_rate_1"
+        app:layout_constraintEnd_toStartOf="@+id/imageButton_rate_5"
+        app:layout_constraintStart_toEndOf="@+id/imageButton_rate_3"
+        app:layout_constraintTop_toTopOf="@+id/imageButton_rate_1"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/ic_baseline_star_24"
+        app:tint="	#FFD700"
+        tools:ignore="VectorDrawableCompat" />
+
+    <ImageButton
+        android:id="@+id/imageButton_rate_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="50dp"
+        android:layout_marginRight="50dp"
+
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="@+id/imageButton_rate_1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/imageButton_rate_1"
+        app:srcCompat="@drawable/ic_baseline_star_24"
+        app:tint="	#FFD700"
+        tools:ignore="VectorDrawableCompat" />
+
+    <TextView
+        android:gravity="center"
+        android:id="@+id/textView_title_evaluate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
+        android:text="How was your delivery today?"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/imageView_img_evalute"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="24dp"
+        app:layout_constraintEnd_toEndOf="@+id/textView_title_evaluate"
+        app:layout_constraintStart_toStartOf="@+id/textView_title_evaluate"
+        app:layout_constraintTop_toBottomOf="@+id/textView_title_evaluate"
+        app:srcCompat="@drawable/backgounrd2" />
+
+    <TextView
+        android:id="@+id/textView_name_evalute"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="TextView"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView_img_evalute" />
+
+    <Button
+        android:id="@+id/button_submit_evaluate_rider"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/rounded_btn_cart"
+        android:text="send"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageButton_rate_3" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
