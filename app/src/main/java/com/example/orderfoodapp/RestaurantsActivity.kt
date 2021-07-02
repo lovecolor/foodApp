@@ -31,6 +31,7 @@ class RestaurantsActivity : AppCompatActivity() {
     companion object {
         val RESTAURANT_KEY = "RESTAURANT_KEY"
         var currentUser: User? = null
+        val listRestaurant: MutableList<Restaurant> = mutableListOf()
     }
 
     val adapterRecycler = GroupAdapter<GroupieViewHolder>()
@@ -42,7 +43,10 @@ class RestaurantsActivity : AppCompatActivity() {
         verifyUserIsLoggedIn()
 //        CartActivity.listMeal.clear()
 
-
+find_restaurant_textview_restaurant.setOnClickListener {
+    val intent=Intent(this,FindRestaurantActivity::class.java)
+    startActivity(intent)
+}
         adapterRecycler.add(LoopViewItem())
         fetchRestaurants()
         recycler_restaurant.adapter = adapterRecycler
@@ -92,6 +96,7 @@ class RestaurantsActivity : AppCompatActivity() {
                     val restaurant = it.getValue(Restaurant::class.java)
                     if (restaurant != null) {
                         adapterRecycler.add(RestaurantItem(restaurant))
+                        listRestaurant.add(restaurant)
                     }
 
                 }
