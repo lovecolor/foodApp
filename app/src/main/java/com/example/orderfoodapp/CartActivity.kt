@@ -20,8 +20,8 @@ import com.xwray.groupie.Item
 import kotlinx.android.synthetic.main.activity_cart.*
 import kotlinx.android.synthetic.main.address_layout_cart.*
 import kotlinx.android.synthetic.main.cart_row.view.*
-import kotlinx.android.synthetic.main.note_layout_cart.*
-import kotlinx.android.synthetic.main.note_layout_cart.view.*
+import kotlinx.android.synthetic.main.footer_cart.*
+import kotlinx.android.synthetic.main.footer_cart.view.*
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -118,7 +118,7 @@ class CartActivity : AppCompatActivity() {
         }
         textView_total_cart.text = (total + 15000).toString() + "đ"
 
-        adapter.add(NoteItem())
+        adapter.add(FooterCartItem(qty, total))
 
 
     }
@@ -162,7 +162,7 @@ class CartActivity : AppCompatActivity() {
                         adapter.add(CartRowItem(it, true))
                     }
 
-                    adapter.add(NoteItem())
+                    adapter.add(FooterCartItem(qty, total))
 
 
                     recyclerView?.adapter = adapter
@@ -197,17 +197,17 @@ class AddressItem : Item<GroupieViewHolder>() {
     }
 }
 
-class NoteItem : Item<GroupieViewHolder>() {
+class FooterCartItem(val qty:Int,val total:Int) : Item<GroupieViewHolder>() {
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 
         viewHolder.itemView.textView_total_qty_footer_order_detail.text =
-            "(" + CartActivity.qty.toString() + " meals)"
+            "(" + qty.toString() + " meals)"
         viewHolder.itemView.textView_temporary_expense_foot_order_detail.text =
-            CartActivity.total.toString() + "đ"
+            total.toString() + "đ"
 
     }
 
     override fun getLayout(): Int {
-        return R.layout.note_layout_cart
+        return R.layout.footer_cart
     }
 }
