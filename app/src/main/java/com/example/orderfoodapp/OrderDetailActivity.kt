@@ -1,7 +1,9 @@
 package com.example.orderfoodapp
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DividerItemDecoration
 import com.example.chatrealtime.models.User
@@ -18,7 +20,6 @@ import com.xwray.groupie.Item
 import kotlinx.android.synthetic.main.activity_order_detail.*
 import kotlinx.android.synthetic.main.footer_order_detail.view.*
 import kotlinx.android.synthetic.main.header_order_detail.view.*
-import kotlinx.android.synthetic.main.header_status_order.view.*
 
 class OrderDetailActivity : AppCompatActivity() {
     val adapter=GroupAdapter<GroupieViewHolder>()
@@ -31,7 +32,8 @@ class OrderDetailActivity : AppCompatActivity() {
 
          restaurant=intent.getParcelableExtra<Restaurant>(RestaurantsActivity.RESTAURANT_KEY)
          order=intent.getParcelableExtra<Order>(HistoryOrderActivity.ORDER)
-//        setUpAdapter()
+
+        setUpAdapter()
 
         recycler_view_order_detail.adapter=adapter
         recycler_view_order_detail.addItemDecoration(DividerItemDecoration(this,DividerItemDecoration.VERTICAL))
@@ -39,18 +41,34 @@ class OrderDetailActivity : AppCompatActivity() {
     private fun setUpAdapter(){
         adapter.add(HeadOrderDetailItem(restaurant!!,order!!))
         fetchOrderDetail()
-        adapter.add(FootOrderDetailItem(order!!))
+
+
     }
     private fun fetchOrderDetail()
     {
+//        Log.d()
         val ref=FirebaseDatabase.getInstance().getReference("/orderDetails/${order?.id}")
         ref.addListenerForSingleValueEvent(object :ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
+                Log.d("OrderDetails",snapshot.children.count().toString())
                 snapshot.children.forEach{
                     val cartMeal
                     =it.getValue(CartMeal::class.java)
                     adapter.add(CartActivity.CartRowItem(cartMeal!!,false))
                 }
+                adapter.add(FooterCartItem(order?.qty!!,order?.total!!-15000))
+                val refUser=FirebaseDatabase.getInstance().getReference("/users/${order?.uid}")
+                refUser.addListenerForSingleValueEvent(object :ValueEventListener{
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        val user=snapshot.getValue(User::class.java)
+                        adapter.add(FootOrderDetailItem(order!!,user!!))
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+
+                    }
+
+                })
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -58,19 +76,27 @@ class OrderDetailActivity : AppCompatActivity() {
             }
 
         })
+
     }
 }
 class HeadOrderDetailItem(val restaurant: Restaurant,val order: Order): Item<GroupieViewHolder>()
 {
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
+
         val itemView=viewHolder.itemView
+
         if(order.status=="Cancelled"){
-            itemView.textView_status_header_status_order.isVisible=false
+            itemView.tv_cancelled_head_order_detail.isVisible=true
         }
         else{
-            itemView.textView_status_header_status_order.isVisible=true
+            itemView.tv_cancelled_head_order_detail.isVisible=false
         }
         itemView.textView_name_restaurant_head_order_detail.text=restaurant.name
+        itemView.textView_name_restaurant_head_order_detail.setOnClickListener {
+            val intent =Intent(itemView.context,MenuActivity::class.java)
+            intent.putExtra(RestaurantsActivity.RESTAURANT_KEY,restaurant)
+            itemView.context.startActivity(intent)
+        }
         itemView.textView_date_time_head_order_detail.text=order.date+" "+order.time
     }
 
@@ -79,31 +105,17 @@ class HeadOrderDetailItem(val restaurant: Restaurant,val order: Order): Item<Gro
     }
 
 }
-class FootOrderDetailItem(val order: Order): Item<GroupieViewHolder>()
+class FootOrderDetailItem(val order: Order,val user:User): Item<GroupieViewHolder>()
 {
-    var user:User?=null
-    private fun fetchUser()
-    {
-        val ref=FirebaseDatabase.getInstance().getReference("/users/${order.uid}")
-        ref.addListenerForSingleValueEvent(object :ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                user=snapshot.getValue(User::class.java)
-            }
 
-            override fun onCancelled(error: DatabaseError) {
 
-            }
-
-        })
-    }
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 val itemView=viewHolder.itemView
-        itemView.textView_temporary_expense_foot_order_detail.text=(order.total-15000).toString()+"đ"
-        itemView.textView_total_qty_footer_order_detail.text="("+order.qty+" meals)"
+
         itemView.textView_total_foot_order_detail.text=order.total.toString()+"đ"
         itemView.textView_type_pay_foot_order_detail.text=order.typePay
         itemView.textView_order_id_foot_order_detail.text=order.id
-        fetchUser()
+
         itemView.textView_name_foot_order_detail.text=user?.username
         itemView.textView_phone_foot_order_detail.text=user?.phone
         itemView.textView_address_foot_order_detail.text=order.address

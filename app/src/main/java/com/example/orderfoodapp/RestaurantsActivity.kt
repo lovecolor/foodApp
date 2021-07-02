@@ -50,6 +50,9 @@ class RestaurantsActivity : AppCompatActivity() {
             val restaurantItem = item as RestaurantItem
             val intent = Intent(view.context, MenuActivity::class.java)
             intent.putExtra(RESTAURANT_KEY, restaurantItem.restaurant)
+            CartActivity.listMeal.clear()
+            CartActivity.total=0
+            CartActivity.qty=0
             startActivity(intent)
         }
         recycler_restaurant.addItemDecoration(
