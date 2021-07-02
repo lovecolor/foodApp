@@ -33,6 +33,29 @@ class OrderDetailActivity : AppCompatActivity() {
          restaurant=intent.getParcelableExtra<Restaurant>(RestaurantsActivity.RESTAURANT_KEY)
          order=intent.getParcelableExtra<Order>(HistoryOrderActivity.ORDER)
 
+        btn_bought_again_order_detail.setOnClickListener {
+            val intent=Intent(this,CartActivity::class.java)
+            CartActivity.qty=0
+            CartActivity.total=0
+            CartActivity.listMeal.clear()
+            val ref=FirebaseDatabase.getInstance().getReference("/orderDetails/${order?.id}")
+            ref.addListenerForSingleValueEvent(object :ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    snapshot.children.forEach{
+                        val meal=it.getValue(CartMeal::class.java)
+                        CartActivity.listMeal.add(meal!!)
+                        CartActivity.qty+=meal.qty
+                        CartActivity.total+=(meal.qty*meal.price)
+                    }
+                    startActivity(intent)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+
+            })
+        }
         setUpAdapter()
 
         recycler_view_order_detail.adapter=adapter

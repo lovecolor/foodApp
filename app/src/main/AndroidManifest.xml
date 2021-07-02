@@ -9,6 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.OrderfoodApp">
+        <activity android:name=".FindRestaurantActivity"></activity>
         <activity android:name=".OrderDetailActivity" />
         <activity android:name=".HistoryOrderActivity" />
         <activity android:name=".EvaluateActivity" />
