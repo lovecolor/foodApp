@@ -8,7 +8,7 @@
     android:paddingVertical="16dp">
 
     <TextView
-        android:id="@+id/textView_status_head_order_detail"
+        android:id="@+id/tv_cancelled_head_order_detail"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_status_head_order_detail"
@@ -32,7 +32,7 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView_status_head_order_detail" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_cancelled_head_order_detail" />
 
     <TextView
         android:id="@+id/textView_date_time_head_order_detail"
@@ -44,4 +44,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_name_restaurant_head_order_detail" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView_date_time_head_order_detail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView_name_restaurant_head_order_detail"
+        app:srcCompat="@drawable/ic_baseline_keyboard_arrow_right_24" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -161,12 +161,13 @@ class HeaderStatusItem(val status:String) : Item<GroupieViewHolder>() {
 
 
             StatusOrderActivity.isCancel=true
-            val ref=FirebaseDatabase.getInstance().getReference("/orders/${FirebaseAuth.getInstance().uid}").push()
+            val order=StatusOrderActivity.order
+            val ref=FirebaseDatabase.getInstance().getReference("/orders/${FirebaseAuth.getInstance().uid}/${order?.id}")
             StatusOrderActivity.order?.status="Cancelled"
-            ref.setValue(StatusOrderActivity.order)
+            ref.setValue(order)
             CartActivity.listMeal.forEach {
                 val refOrderDetail =
-                    FirebaseDatabase.getInstance().getReference("/orderDetails/${ref.key}")
+                    FirebaseDatabase.getInstance().getReference("/orderDetails/${order?.id}")
                         .push()
                 val meal = it
                 refOrderDetail.setValue(meal)
@@ -233,11 +234,12 @@ class HeaderStatusItem(val status:String) : Item<GroupieViewHolder>() {
                                         override fun run() {
                                             val ref=FirebaseDatabase.getInstance().getReference("/delivers/${StatusOrderActivity.infoShipper?.uid}")
                                             ref.removeValue()
-                                            val refOrder=FirebaseDatabase.getInstance().getReference("/orders/${FirebaseAuth.getInstance().uid}").push()
-                                            refOrder.setValue(StatusOrderActivity.order)
+                                            val order=StatusOrderActivity.order
+                                            val refOrder=FirebaseDatabase.getInstance().getReference("/orders/${FirebaseAuth.getInstance().uid}/${order?.id}")
+                                            refOrder.setValue(order)
                                             CartActivity.listMeal.forEach {
                                                 val refOrderDetail =
-                                                    FirebaseDatabase.getInstance().getReference("/orderDetails/${ref.key}")
+                                                    FirebaseDatabase.getInstance().getReference("/orderDetails/${order?.id}")
                                                         .push()
                                                 val meal = it
                                                 refOrderDetail.setValue(meal)

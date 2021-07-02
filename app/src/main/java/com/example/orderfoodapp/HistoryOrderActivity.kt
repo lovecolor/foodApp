@@ -6,6 +6,7 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import com.example.orderfoodapp.models.CartMeal
 import com.example.orderfoodapp.models.Order
 import com.example.orderfoodapp.models.Restaurant
 import com.google.firebase.auth.FirebaseAuth
@@ -67,6 +68,7 @@ class HistoryOrderActivity : AppCompatActivity() {
             val intent= Intent(view.context,OrderDetailActivity::class.java)
             val historyOrderRowItem=item as HistoryOrderRowItem
             intent.putExtra(RestaurantsActivity.RESTAURANT_KEY,historyOrderRowItem.restaurant)
+
             intent.putExtra(ORDER,historyOrderRowItem.order)
             view.context.startActivity(intent)
         }
@@ -80,8 +82,31 @@ class HistoryOrderRowItem(val order: Order,val restaurant: Restaurant) : Item<Gr
 
     @SuppressLint("ResourceAsColor")
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
-        Log.d("Restaurantid",order.restaurantId)
+
         val itemView = viewHolder.itemView
+        itemView.btn_bought_history_row.setOnClickListener {
+            val intent=Intent(itemView.context,CartActivity::class.java)
+            CartActivity.listMeal.clear()
+            CartActivity.total=0
+            CartActivity.qty=0
+            val ref=FirebaseDatabase.getInstance().getReference("/orderDetails/${order.id}")
+            ref.addListenerForSingleValueEvent(object :ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    snapshot.children.forEach{
+                        val meal=it.getValue(CartMeal::class.java)
+                        CartActivity.listMeal.add(meal!!)
+                        CartActivity.total+=(meal.qty*meal.price)
+                        CartActivity.qty+=meal.qty
+                    }
+                    itemView.context.startActivity(intent)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+
+                }
+
+            })
+        }
         itemView.textView_status_history_row.text = order.status
         itemView.textView_date_history_row.text = order.date
 

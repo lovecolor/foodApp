@@ -45,9 +45,11 @@ class MealActivity : AppCompatActivity() {
             textView_total_meal.text=(qty*meal?.price!!).toString()+"đ"
         }
         btn_add_meal.setOnClickListener {
+val cartMeal=CartMeal(meal?.name!!,meal?.price!!,meal?.profileImageUrl!!,qty,editText_note_meal.text.toString())
 
-                CartActivity.listMeal.add(CartMeal(meal?.name!!,meal?.price!!,meal?.profileImageUrl!!,qty,editText_note_meal.text.toString()))
-            Log.d("Meal",CartActivity.listMeal.size.toString())
+            CartActivity.listMeal.add(cartMeal)
+            CartActivity.total+=(meal?.price!!*qty)
+            CartActivity.qty+=qty
             val intent=Intent(this,MenuActivity::class.java)
             intent.putExtra(RestaurantsActivity.RESTAURANT_KEY,MenuActivity.restaurant)
             startActivity(intent)
