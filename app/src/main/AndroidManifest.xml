@@ -9,16 +9,37 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.OrderfoodApp">
-        <activity android:name=".FindRestaurantActivity"></activity>
-        <activity android:name=".OrderDetailActivity" />
-        <activity android:name=".HistoryOrderActivity" />
-        <activity android:name=".EvaluateActivity" />
-        <activity android:name=".StatusOrderActivity" />
-        <activity android:name=".CartActivity" />
-        <activity android:name=".MealActivity" />
-        <activity android:name=".MenuActivity" />
-        <activity android:name=".EditInfomationActivity" />
-        <activity android:name=".actionsActivity" />
+        <activity android:name=".OrderPendingActivity"></activity>
+        <activity android:name=".FindRestaurantActivity" />
+        <activity android:name=".OrderDetailActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HistoryOrderActivity" />
+        </activity>
+        <activity android:name=".HistoryOrderActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".actionsActivity" />
+        </activity>
+        <activity android:name=".EvaluateActivity"></activity>
+        <activity android:name=".StatusOrderActivity"></activity>
+        <activity android:name=".CartActivity"></activity>
+        <activity android:name=".MealActivity"></activity>
+        <activity android:name=".MenuActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".RestaurantsActivity" />
+        </activity>
+        <activity android:name=".EditInfomationActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".actionsActivity" />
+        </activity>
+        <activity android:name=".actionsActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".RestaurantsActivity" />
+        </activity>
         <activity android:name=".RestaurantsActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -29,7 +29,7 @@ class OrderDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order_detail)
-
+        supportActionBar?.title="Order Detail"
          restaurant=intent.getParcelableExtra<Restaurant>(RestaurantsActivity.RESTAURANT_KEY)
          order=intent.getParcelableExtra<Order>(HistoryOrderActivity.ORDER)
 

@@ -42,6 +42,7 @@ class MenuActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_menu)
+        supportActionBar?.title="Menu"
         btn_cart=btn_cart_menu
         textView_qty=textView_qty_meal_menu
         textView_total=textView_total_meal_menu

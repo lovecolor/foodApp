@@ -17,7 +17,7 @@ class MealActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_meal)
-
+        supportActionBar?.title="Meal Information"
         meal=intent.getParcelableExtra<Meal>(MenuActivity.MEAL_KEY)
         loadData()
         imageButton_sub_meal.setOnClickListener {

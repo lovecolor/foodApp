@@ -3,6 +3,7 @@ package com.example.orderfoodapp
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
@@ -44,7 +45,7 @@ class CartActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cart)
-
+        supportActionBar?.title="Your Cart"
 
         recyclerView = recycler_cart
         textView_total = textView_total_cart
@@ -77,29 +78,31 @@ class CartActivity : AppCompatActivity() {
                 "${time.hours}:${time.minutes}",
                 total + 15000,
                 qty,
-                textView_type_pay_cart.text.toString(), "Delivered",
+                textView_type_pay_cart.text.toString(), "Preparing",
                 editText_address_cart.text.toString(),
 
             )
 
-//            ref.setValue(order).addOnSuccessListener {
-//
-//
-//                listMeal.forEach {
-//                    val ref =
-//                        FirebaseDatabase.getInstance().getReference("/orderDetails/${ref.key}")
-//                            .push()
-//                    val meal = it
-//                    ref.setValue(meal)
-//
-//                }
-//
-//
-//            }.addOnFailureListener {
-//                Log.d("Order", it.message.toString())
-//            }
-//            total = 0
-//            qty = 0
+            ref.setValue(order).addOnSuccessListener {
+
+
+                listMeal.forEach {
+                    val refOrderDetails =
+                        FirebaseDatabase.getInstance().getReference("/orderDetails/${order.id}")
+                            .push()
+                    val meal = it
+                    refOrderDetails.setValue(meal)
+
+                }
+                total = 0
+                qty = 0
+                listMeal.clear()
+
+
+            }.addOnFailureListener {
+                Log.d("Order", it.message.toString())
+            }
+
             val intent = Intent(this, StatusOrderActivity::class.java)
             intent.putExtra(ORDER_KEY, order)
             startActivity(intent)

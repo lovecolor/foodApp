@@ -10,7 +10,7 @@ class EditInfomationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_infomation)
-
+        supportActionBar?.title="Infomation"
         loadUser()
 
         signout_textview_edit_info.setOnClickListener {
