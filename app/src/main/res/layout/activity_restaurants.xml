@@ -43,5 +43,21 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/find_restaurant_textview_restaurant" />
 
+    <TextView
+        android:id="@+id/textView_notification_restaurant"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/line_border_layout"
+        android:gravity="center"
+        android:paddingVertical="15dp"
+        android:text="TextView"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
