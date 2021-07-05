@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
+import com.example.orderfoodapp.models.Restaurant
 import com.google.firebase.database.FirebaseDatabase
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_evaluate.*
@@ -51,7 +52,7 @@ class EvaluateActivity : AppCompatActivity() {
 
             rate=5
             setRate()
-            val restaurant=MenuActivity.restaurant
+            val restaurant=intent.getParcelableExtra<Restaurant>(RestaurantsActivity.RESTAURANT_KEY)
             textView_title_evaluate.text="How were our restaurant serve?"
             Picasso.get().load(restaurant?.profileImageUrl).into(imageView_img_evalute)
             textView_name_evalute.text=restaurant?.name

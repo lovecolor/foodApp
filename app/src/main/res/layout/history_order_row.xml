@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="10dp"
-    android:paddingHorizontal="16dp"
+    android:paddingHorizontal="8dp"
     android:paddingTop="8dp"
     android:background="@color/white">
 
@@ -14,6 +14,8 @@
         android:id="@+id/imageView_status_history_order"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         app:layout_constraintBottom_toBottomOf="@+id/textView_status_history_row"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView_status_history_row"
@@ -49,6 +51,8 @@
         android:id="@+id/imageView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         app:layout_constraintBottom_toTopOf="@+id/btn_bought_history_row"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -61,6 +65,8 @@
         android:id="@+id/textView_name_restaurant_history_row"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="24dp"
         android:layout_marginRight="24dp"
@@ -68,7 +74,7 @@
         android:textColor="@android:color/darker_gray"
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/imageView3"
-        app:layout_constraintStart_toStartOf="@+id/imageView_status_history_order"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView_status_history_row" />
 
     <TextView
