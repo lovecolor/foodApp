@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.ImageButton
+import com.example.chatrealtime.models.User
 import com.example.orderfoodapp.models.Restaurant
 import com.google.firebase.database.FirebaseDatabase
 import com.squareup.picasso.Picasso
@@ -24,8 +25,9 @@ class EvaluateActivity : AppCompatActivity() {
 
     private fun setUp()
     {
-        Picasso.get().load(StatusOrderActivity.infoShipper?.profileImageUrl).into(imageView_img_evalute)
-        textView_name_evalute.text=StatusOrderActivity.infoShipper?.username
+        val driver=intent.getParcelableExtra<User>(StatusOrderActivity.USER_KEY)
+        Picasso.get().load(driver?.profileImageUrl).into(imageView_img_evalute)
+        textView_name_evalute.text=driver?.username
 
         val mutableList=mutableListOf(
                 imageButton_rate_1,
