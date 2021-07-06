@@ -28,12 +28,12 @@ import kotlinx.android.synthetic.main.name_restaurant_status_order.view.*
 import java.util.*
 
 class StatusOrderActivity : AppCompatActivity() {
-
-
+    var infoShipper: User? = null
+    var order: Order? = null
     companion object {
-        var infoShipper: User? = null
+val USER_KEY="USER_KEY"
         val adapter = GroupAdapter<GroupieViewHolder>()
-        var order: Order? = null
+
         var isCancel: Boolean = false
         var timeMap = HashMap<String, String>()
     }
@@ -46,7 +46,7 @@ class StatusOrderActivity : AppCompatActivity() {
         order = intent.getParcelableExtra(CartActivity.ORDER_KEY)
         fetchTimeStatus()
 
-        verifyOrderIsPedding()
+        verifyOrderIsPending()
         setUpAdapter()
 //        Handler(mainLooper).postDelayed(object : Runnable {
 //            override fun run() {
@@ -76,7 +76,7 @@ class StatusOrderActivity : AppCompatActivity() {
 
                         if (snapshot.children.count() == 0 && !isFindSuccess) {
 
-                            refDeliver.setValue(StatusOrderActivity.order)
+                            refDeliver.setValue(order)
                             isFindSuccess = true
                             val refShipper = FirebaseDatabase.getInstance().getReference("/users/${snapshot.key}")
                             refShipper.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -85,7 +85,7 @@ class StatusOrderActivity : AppCompatActivity() {
                                     val user = snapshot.getValue(User::class.java)
                                     infoShipper = user
                                     adapter.clear()
-                                    adapter.add(HeaderStatusItem("Find success"))
+                                    adapter.add(HeaderStatusItem("Find success",order!!, infoShipper!!))
                                     adapter.add(ShipperItem(user!!))
 
 
@@ -128,7 +128,7 @@ class StatusOrderActivity : AppCompatActivity() {
         })
     }
 
-    private fun verifyOrderIsPedding() {
+    private fun verifyOrderIsPending() {
         infoShipper = null
         val ref = FirebaseDatabase.getInstance().getReference("/delivers")
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
@@ -140,6 +140,9 @@ class StatusOrderActivity : AppCompatActivity() {
                         ref.addListenerForSingleValueEvent(object : ValueEventListener {
                             override fun onDataChange(snapshot: DataSnapshot) {
                                 infoShipper = snapshot.getValue(User::class.java)
+                                adapter.clear()
+                                adapter.add(HeaderStatusItem("Find success",order!!, infoShipper!!))
+                                adapter.add(ShipperItem(infoShipper!!))
                             }
 
                             override fun onCancelled(error: DatabaseError) {
@@ -207,7 +210,7 @@ class StatusOrderActivity : AppCompatActivity() {
 
     private fun setUpAdapter() {
         adapter.clear()
-        adapter.add(HeaderStatusItem("Finding driver"))
+        adapter.add(HeaderStatusItem("Finding driver",order!!))
         adapter.add(NameRestaurantItem())
         CartActivity.listMeal.forEach {
             adapter.add(CartActivity.CartRowItem(it, false))
@@ -248,7 +251,7 @@ class NameRestaurantItem : Item<GroupieViewHolder>() {
 
 }
 
-class HeaderStatusItem(val status: String) : Item<GroupieViewHolder>() {
+class HeaderStatusItem(val status: String,val order: Order?=null,val user: User?=null) : Item<GroupieViewHolder>() {
 
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 
@@ -301,7 +304,7 @@ class HeaderStatusItem(val status: String) : Item<GroupieViewHolder>() {
 
 
             StatusOrderActivity.isCancel = true
-            val order = StatusOrderActivity.order
+
             val ref = FirebaseDatabase.getInstance().getReference("/orders/${FirebaseAuth.getInstance().uid}/${order?.id}/status")
 
             ref.setValue("Cancelled")
@@ -320,24 +323,20 @@ class HeaderStatusItem(val status: String) : Item<GroupieViewHolder>() {
         }
 
 
-        var time = Calendar.getInstance().getTime();
-//        if (status == "Finding driver"&&StatusOrderActivity.infoShipper==null) {
-//
-//            val ref = FirebaseDatabase.getInstance().getReference("/timeStatus/${StatusOrderActivity.order?.id}/checking")
-//            ref.setValue(time.hours.toString() + ":" + time.minutes.toString())
-//        }
+
+
 
 
         val n: Long = 5000
-        fun changeStatus(i: Int) {
+        fun changeStatus(i: Int,order: Order) {
 
             Handler(Looper.getMainLooper()).postDelayed(object : Runnable {
                 override fun run() {
                     if (i >= listStatus.size) {
 
-                        val ref = FirebaseDatabase.getInstance().getReference("/delivers/${StatusOrderActivity.infoShipper?.uid}")
+                        val ref = FirebaseDatabase.getInstance().getReference("/delivers/${user?.uid}")
                         ref.removeValue()
-                        val order = StatusOrderActivity.order
+
                         val refOrder = FirebaseDatabase.getInstance().getReference("/orders/${FirebaseAuth.getInstance().uid}/${order?.id}/status")
                         refOrder.setValue("Delivered")
 
@@ -347,7 +346,9 @@ class HeaderStatusItem(val status: String) : Item<GroupieViewHolder>() {
                                 val restaurant = snapshot.getValue(Restaurant::class.java)
                                 val intent = Intent(viewHolder.itemView.context, EvaluateActivity::class.java)
                                 intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+                                intent.putExtra(StatusOrderActivity.USER_KEY, user)
                                 intent.putExtra(RestaurantsActivity.RESTAURANT_KEY, restaurant)
+
                                 viewHolder.itemView.context.startActivity(intent)
                             }
 
@@ -359,10 +360,10 @@ class HeaderStatusItem(val status: String) : Item<GroupieViewHolder>() {
 
                     } else {
 
-                        val ref = FirebaseDatabase.getInstance().getReference("/timeStatus/${StatusOrderActivity.order?.id}/${listStatus[i]}")
+                        val ref = FirebaseDatabase.getInstance().getReference("/timeStatus/${order?.id}/${listStatus[i]}")
                         val date = Date()
                         ref.setValue(date.hours.toString() + ":" + date.minutes.toString())
-                        changeStatus(i + 1)
+                        changeStatus(i + 1,order)
                     }
 
                 }
@@ -372,69 +373,9 @@ class HeaderStatusItem(val status: String) : Item<GroupieViewHolder>() {
         if (status == "Find success") {
             viewHolder.itemView.textview_notification_header_status.text = ""
             viewHolder.itemView.btn_cancel_order_header_status_order.isVisible = false
-            if (StatusOrderActivity.timeMap.size <= 1) changeStatus(0)
+            if (StatusOrderActivity.timeMap.size <= 1) changeStatus(0,order!!)
 
-//            Handler(Looper.getMainLooper()).postDelayed(object : Runnable {
-//
-//
-//                override fun run() {
-//
-//                    viewHolder.itemView.textView_status_header_status_order.text = "Preparing"
-//                    time = Calendar.getInstance().getTime();
-//                    val ref = FirebaseDatabase.getInstance().getReference("/timeStatus/${StatusOrderActivity.order?.id}/preparing")
-//                    ref.setValue(time.hours.toString() + ":" + time.minutes.toString())
-//                    viewHolder.itemView.textView_time_preparing_header.text =
-//                            time.hours.toString() + ":" + time.minutes.toString()
-//                    viewHolder.itemView.textView_preparing_head.setTextColor(Color.BLACK)
-//                    viewHolder.itemView.textView_preparing_head.setTextSize(18F)
-//                    Handler(Looper.getMainLooper()).postDelayed(object : Runnable {
-//
-//                        override fun run() {
-//                            viewHolder.itemView.textView_status_header_status_order.text = "Delivering"
-//                            time = Calendar.getInstance().getTime();
-//                            val ref = FirebaseDatabase.getInstance().getReference("/timeStatus/${StatusOrderActivity.order?.id}/delivering")
-//                            ref.setValue(time.hours.toString() + ":" + time.minutes.toString())
-//                            viewHolder.itemView.textView__time_delivering_header.text =
-//                                    time.hours.toString() + ":" + time.minutes.toString()
-//                            viewHolder.itemView.textView_delivering_head.setTextColor(Color.BLACK)
-//                            viewHolder.itemView.textView_delivering_head.setTextSize(18F)
-//                            Handler(Looper.getMainLooper()).postDelayed(object : Runnable {
-//
-//                                override fun run() {
-//                                    viewHolder.itemView.textView_status_header_status_order.text = "Arrived"
-//                                    time = Calendar.getInstance().getTime();
-//                                    val ref = FirebaseDatabase.getInstance().getReference("/timeStatus/${StatusOrderActivity.order?.id}/arrived")
-//                                    ref.setValue(time.hours.toString() + ":" + time.minutes.toString())
-//                                    viewHolder.itemView.textView_time_arived_header.text =
-//                                            time.hours.toString() + ":" + time.minutes.toString()
-//                                    viewHolder.itemView.textView_arrived_head.setTextColor(Color.BLACK)
-//                                    viewHolder.itemView.textView_arrived_head.setTextSize(18F)
-//                                    Handler(Looper.getMainLooper()).postDelayed(object : Runnable {
-//                                        override fun run() {
-//
-//                                            val ref = FirebaseDatabase.getInstance().getReference("/delivers/${StatusOrderActivity.infoShipper?.uid}")
-//                                            ref.removeValue()
-//                                            val order = StatusOrderActivity.order
-//                                            val refOrder = FirebaseDatabase.getInstance().getReference("/orders/${FirebaseAuth.getInstance().uid}/${order?.id}/status")
-//                                            refOrder.setValue("Delivered")
-//
-//
-//                                            val intent = Intent(viewHolder.itemView.context, EvaluateActivity::class.java)
-//                                            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
-//                                            viewHolder.itemView.context.startActivity(intent)
-//                                        }
-//
-//                                    }, 2000)
-//                                }
-//
-//                            }, 2000)
-//                        }
-//
-//                    }, 2000)
-//
-//                }
-//
-//            }, 2000)
+
         }
 
 
