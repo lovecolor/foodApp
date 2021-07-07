@@ -8,6 +8,7 @@ import com.asksira.loopingviewpager.LoopingPagerAdapter
 
 class ImagesAdapter(private val images: MutableList<Int>) : LoopingPagerAdapter<Int>(images, true) {
     override fun bindView(convertView: View, listPosition: Int, viewType: Int) {
+
         convertView.findViewById<ImageView>(R.id.imageView_lopp_viewpager).setImageResource(images[listPosition])
     }
 

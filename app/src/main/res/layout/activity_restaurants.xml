@@ -40,8 +40,10 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/find_restaurant_textview_restaurant" />
+        app:layout_constraintTop_toBottomOf="@+id/find_restaurant_textview_restaurant"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/textView_notification_restaurant"
@@ -58,6 +60,39 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/imageButton_cart_restaurant"
+
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="50dp"
+        android:background="@drawable/rounded_btn_cart_restaurant"
+        android:padding="15dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_baseline_shopping_cart_24"
+        app:tint="@color/white"
+        tools:ignore="MissingConstraints,VectorDrawableCompat" />
+
+    <TextView
+        android:id="@+id/textView_qty_cart_restaurant"
+        android:layout_width="25dp"
+        android:layout_height="25dp"
+        android:layout_marginTop="-10dp"
+        android:layout_marginEnd="-10dp"
+        android:layout_marginRight="-10dp"
+        android:background="@drawable/rounded_qty_cart"
+        android:gravity="center"
+        android:maxWidth="50dp"
+        android:text="1"
+        android:textColor="@color/main"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/imageButton_cart_restaurant"
+        app:layout_constraintTop_toTopOf="@+id/imageButton_cart_restaurant" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

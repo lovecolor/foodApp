@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.RecyclerView
 import com.example.orderfoodapp.models.CartMeal
 import com.example.orderfoodapp.models.Order
+import com.example.orderfoodapp.models.Restaurant
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import com.xwray.groupie.GroupAdapter
@@ -32,7 +33,7 @@ class CartActivity : AppCompatActivity() {
         val ORDER_KEY = "ORDER_KEY"
         var listMeal: MutableList<CartMeal> = mutableListOf()
         var adapter = GroupAdapter<GroupieViewHolder>()
-
+        var restaurant: Restaurant? = null
         var recyclerView: RecyclerView? = null
         var textView_total: TextView? = null
         var total: Int = 0
@@ -45,7 +46,7 @@ class CartActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_cart)
-        supportActionBar?.title="Your Cart"
+        supportActionBar?.title = "Your Cart"
 
         recyclerView = recycler_cart
         textView_total = textView_total_cart
@@ -71,25 +72,25 @@ class CartActivity : AppCompatActivity() {
 
 
             val order = Order(
-                ref.key!!,
-                FirebaseAuth.getInstance().uid!!,
-                MenuActivity.restaurant?.id!!,
-                currentDate,
-                "${time.hours}:${time.minutes}",
-                total + 15000,
-                qty,
-                textView_type_pay_cart.text.toString(), "Preparing",
-                editText_address_cart.text.toString(),
+                    ref.key!!,
+                    FirebaseAuth.getInstance().uid!!,
+                    MenuActivity.restaurant?.id!!,
+                    currentDate,
+                    "${time.hours}:${time.minutes}",
+                    total + 15000,
+                    qty,
+                    textView_type_pay_cart.text.toString(), "Preparing",
+                    editText_address_cart.text.toString(),
 
-            )
+                    )
 
             ref.setValue(order).addOnSuccessListener {
 
 
                 listMeal.forEach {
                     val refOrderDetails =
-                        FirebaseDatabase.getInstance().getReference("/orderDetails/${order.id}")
-                            .push()
+                            FirebaseDatabase.getInstance().getReference("/orderDetails/${order.id}")
+                                    .push()
                     val meal = it
                     refOrderDetails.setValue(meal)
 
@@ -127,12 +128,12 @@ class CartActivity : AppCompatActivity() {
     }
 
     class CartRowItem(val cartMeal: CartMeal, val isHaveBtnCancel: Boolean) :
-        Item<GroupieViewHolder>() {
+            Item<GroupieViewHolder>() {
         override fun bind(viewHolder: GroupieViewHolder, position: Int) {
             viewHolder.itemView.textView_qty_cart_row.text = cartMeal.qty.toString() + "x"
             viewHolder.itemView.textView_name_meal_cart.text = cartMeal.name
             viewHolder.itemView.textView_price_meal_cart.text =
-                (cartMeal.price * cartMeal.qty).toString() + "đ"
+                    (cartMeal.price * cartMeal.qty).toString() + "đ"
             val note = cartMeal.note
             if (note != "") {
                 viewHolder.itemView.textView_note_cart_row.isVisible = true
@@ -151,8 +152,7 @@ class CartActivity : AppCompatActivity() {
                     if (listMeal.size == 0) {
                         val intent = Intent(viewHolder.itemView.context, MenuActivity::class.java)
                         intent.putExtra(RestaurantsActivity.RESTAURANT_KEY, MenuActivity.restaurant)
-                        intent.flags =
-                            Intent.FLAG_ACTIVITY_CLEAR_TASK.or(Intent.FLAG_ACTIVITY_NEW_TASK)
+
 
                         MenuActivity.btn_cart?.isVisible = false
                         viewHolder.itemView.context.startActivity(intent)
@@ -200,13 +200,13 @@ class AddressItem : Item<GroupieViewHolder>() {
     }
 }
 
-class FooterCartItem(val qty:Int,val total:Int) : Item<GroupieViewHolder>() {
+class FooterCartItem(val qty: Int, val total: Int) : Item<GroupieViewHolder>() {
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 
         viewHolder.itemView.textView_total_qty_footer_order_detail.text =
-            "(" + qty.toString() + " meals)"
+                "(" + qty.toString() + " meals)"
         viewHolder.itemView.textView_temporary_expense_foot_order_detail.text =
-            total.toString() + "đ"
+                total.toString() + "đ"
 
     }
 

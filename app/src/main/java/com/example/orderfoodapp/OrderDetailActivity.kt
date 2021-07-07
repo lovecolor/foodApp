@@ -47,6 +47,7 @@ class OrderDetailActivity : AppCompatActivity() {
                         CartActivity.qty+=meal.qty
                         CartActivity.total+=(meal.qty*meal.price)
                     }
+                    CartActivity.restaurant=restaurant
                     startActivity(intent)
                 }
 
