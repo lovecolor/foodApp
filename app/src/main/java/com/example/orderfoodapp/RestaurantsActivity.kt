@@ -173,7 +173,7 @@ class RestaurantItem(val restaurant: Restaurant) : Item<GroupieViewHolder>() {
             }
 
         })
-        val qtyRate=restaurant.countRate
+                val qtyRate=restaurant.countRate
         if(qtyRate==0)
         {
             itemView.textView_rate_restaurant_row.isVisible=false
