@@ -72,6 +72,20 @@ class RestaurantsActivity : AppCompatActivity() {
                         DividerItemDecoration.VERTICAL
                 )
         )
+        if(CartActivity.qty>0)
+        {
+            textView_qty_cart_restaurant.text=CartActivity.qty.toString()
+
+        }
+        else{
+            textView_qty_cart_restaurant.isVisible=false;
+            imageButton_cart_restaurant.isVisible=false;
+        }
+        imageButton_cart_restaurant.setOnClickListener {
+            val intent=Intent(this,MenuActivity::class.java)
+            intent.putExtra(RESTAURANT_KEY,CartActivity.restaurant)
+            startActivity(intent)
+        }
 
     }
 
@@ -107,6 +121,7 @@ class RestaurantsActivity : AppCompatActivity() {
     }
 
     class LoopViewItem : Item<GroupieViewHolder>() {
+
         override fun bind(viewHolder: GroupieViewHolder, position: Int) {
             val adapter = ImagesAdapter(
                     mutableListOf(

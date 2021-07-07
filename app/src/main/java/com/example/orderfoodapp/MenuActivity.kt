@@ -54,6 +54,7 @@ class MenuActivity : AppCompatActivity() {
 
         btn_cart_menu.setOnClickListener {
             val intent=Intent(this,CartActivity::class.java)
+
             startActivity(intent)
         }
         if (CartActivity.listMeal.size == 0) {
@@ -61,12 +62,7 @@ class MenuActivity : AppCompatActivity() {
 
 
         } else {
-//             CartActivity.qty=0
-//             CartActivity.total=0
-//            CartActivity.listMeal.forEach {
-//                CartActivity.qty +=it.qty
-//                CartActivity.total+=(it.qty*it.price)
-//            }
+
             textView_qty_meal_menu.text=qty.toString()+" Meals"
             textView_total_meal_menu.text=CartActivity.total.toString()+"đ"
             btn_cart_menu.isVisible=true

@@ -51,6 +51,7 @@ val cartMeal=CartMeal(meal?.name!!,meal?.price!!,meal?.profileImageUrl!!,qty,edi
             CartActivity.total+=(meal?.price!!*qty)
             CartActivity.qty+=qty
             val intent=Intent(this,MenuActivity::class.java)
+            CartActivity.restaurant=MenuActivity.restaurant
             intent.putExtra(RestaurantsActivity.RESTAURANT_KEY,MenuActivity.restaurant)
             startActivity(intent)
 

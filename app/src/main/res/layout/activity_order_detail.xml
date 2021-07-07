@@ -7,6 +7,7 @@
     tools:context=".OrderDetailActivity">
 
     <TextView
+
         android:id="@+id/btn_bought_again_order_detail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -17,7 +18,7 @@
         android:layout_marginBottom="16dp"
         android:background="@drawable/rounded_btn_cart"
         android:gravity="center"
-        android:paddingVertical="10dp"
+        android:paddingVertical="15dp"
         android:text="Order Again"
         android:textColor="@color/white"
         android:textStyle="bold"
