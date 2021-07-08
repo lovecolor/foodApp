@@ -16,46 +16,68 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
-        <TextView
-            android:drawableTint="@color/font"
-            android:id="@+id/textView_type_pay_cart"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:paddingTop="1dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginBottom="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toTopOf="@+id/textView_order_cart"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
-            android:drawableLeft="@drawable/ic_money"
-            android:gravity="center_vertical"
-            android:text="Pay in cash"
-            android:textColor="@color/black"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+
+                android:id="@+id/textView_type_pay_cart"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:drawableLeft="@mipmap/ic_cash"
+                android:drawableRight="@drawable/ic_baseline_keyboard_arrow_up_24"
+
+
+                android:gravity="center_vertical"
+                android:paddingRight="16dp"
+                android:text="Cash"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <Button
+                android:id="@+id/button_add_promo_cart"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:text="add a promo"
+                android:textColor="@color/main" />
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textView_total_cart"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginBottom="16dp"
             android:text="TextView"
             android:textColor="@color/black"
             android:textSize="18sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="@+id/textView_type_pay_cart" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:textColor="@color/font"
             android:id="@+id/textView10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
             android:layout_marginBottom="8dp"
             android:text="Total"
+            android:textColor="@color/font"
             app:layout_constraintBottom_toTopOf="@+id/textView_total_cart"
-            app:layout_constraintStart_toStartOf="@+id/textView_type_pay_cart"
-            app:layout_constraintTop_toBottomOf="@+id/textView_type_pay_cart" />
+            app:layout_constraintStart_toStartOf="@+id/textView_total_cart" />
 
         <TextView
             android:id="@+id/textView_order_cart"

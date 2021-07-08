@@ -28,8 +28,11 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class CartActivity : AppCompatActivity() {
-
+    var textTypePay:String="Cash"
+    var icTypePay:Int=R.mipmap.ic_cash
     companion object {
+        val TEXT_TYPE_PAY="TEXT_TYPE_PAY"
+        val IC_TYPE_PAY="IC_TYPE_PAY"
         val ORDER_KEY = "ORDER_KEY"
         var listMeal: MutableList<CartMeal> = mutableListOf()
         var adapter = GroupAdapter<GroupieViewHolder>()
@@ -40,6 +43,7 @@ class CartActivity : AppCompatActivity() {
         var qty: Int = 0
 
 
+
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -48,11 +52,16 @@ class CartActivity : AppCompatActivity() {
         setContentView(R.layout.activity_cart)
         supportActionBar?.title = "Your Cart"
 
+        val text=intent.getStringExtra(TEXT_TYPE_PAY)
+        val ic:Int=intent.getIntExtra(IC_TYPE_PAY,0)
+        if(text!=null) textTypePay=text
+        if(ic!=0) icTypePay=ic
+
         recyclerView = recycler_cart
         textView_total = textView_total_cart
         adapter.clear()
 
-
+        setUpEvent()
         loadData()
 
         recycler_cart.adapter = adapter
@@ -110,6 +119,16 @@ class CartActivity : AppCompatActivity() {
         }
     }
 
+    private fun setUpEvent() {
+        textView_type_pay_cart.text=textTypePay
+        textView_type_pay_cart.setCompoundDrawablesWithIntrinsicBounds(icTypePay,0,R.drawable.ic_baseline_keyboard_arrow_up_24,0)
+
+        textView_type_pay_cart.setOnClickListener {
+            val intent = Intent(this, TypePayActivity::class.java)
+            intent.putExtra(TEXT_TYPE_PAY,textTypePay)
+            startActivity(intent)
+        }
+    }
 
     fun loadData() {
 

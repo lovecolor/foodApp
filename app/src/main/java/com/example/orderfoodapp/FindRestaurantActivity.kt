@@ -49,7 +49,7 @@ class FindRestaurantActivity : AppCompatActivity() {
             {
                 RestaurantsActivity.listRestaurant.forEach {
                     if(it.name.toLowerCase().contains(text)){
-                        adapter.add(RestaurantItem(it))
+                        adapter.add(RestaurantItem(it,text))
                     }
                 }
             }
