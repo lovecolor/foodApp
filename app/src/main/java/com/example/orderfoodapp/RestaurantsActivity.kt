@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -41,13 +42,13 @@ class RestaurantsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_restaurants)
-        supportActionBar?.title="Restaurants"
+        supportActionBar?.title = "Restaurants"
 
         verifyUserIsLoggedIn()
 
         fetchOrderPeding()
         textView_notification_restaurant.setOnClickListener {
-            val intent=Intent(this,OrderPendingActivity::class.java)
+            val intent = Intent(this, OrderPendingActivity::class.java)
             startActivity(intent)
         }
         find_restaurant_textview_restaurant.setOnClickListener {
@@ -72,18 +73,16 @@ class RestaurantsActivity : AppCompatActivity() {
                         DividerItemDecoration.VERTICAL
                 )
         )
-        if(CartActivity.qty>0)
-        {
-            textView_qty_cart_restaurant.text=CartActivity.qty.toString()
+        if (CartActivity.qty > 0) {
+            textView_qty_cart_restaurant.text = CartActivity.qty.toString()
 
-        }
-        else{
-            textView_qty_cart_restaurant.isVisible=false;
-            imageButton_cart_restaurant.isVisible=false;
+        } else {
+            textView_qty_cart_restaurant.isVisible = false;
+            imageButton_cart_restaurant.isVisible = false;
         }
         imageButton_cart_restaurant.setOnClickListener {
-            val intent=Intent(this,MenuActivity::class.java)
-            intent.putExtra(RESTAURANT_KEY,CartActivity.restaurant)
+            val intent = Intent(this, MenuActivity::class.java)
+            intent.putExtra(RESTAURANT_KEY, CartActivity.restaurant)
             startActivity(intent)
         }
 
@@ -102,12 +101,12 @@ class RestaurantsActivity : AppCompatActivity() {
                         OrderPendingActivity.listOrder.add(order!!)
                     }
                 }
-                val qtyOrder=OrderPendingActivity.listOrder.size
+                val qtyOrder = OrderPendingActivity.listOrder.size
                 if (qtyOrder > 0) {
                     var tobe = "is"
                     if (qtyOrder > 1) tobe = "are"
                     val WordtoSpan: Spannable = SpannableString("You have $qtyOrder order $tobe pending!")
-                    WordtoSpan.setSpan(ForegroundColorSpan(Color.parseColor("#4AC3AB")), 9, 9+qtyOrder.toString().length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+                    WordtoSpan.setSpan(ForegroundColorSpan(Color.parseColor("#4AC3AB")), 9, 9 + qtyOrder.toString().length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
                     textView_notification_restaurant.setText(WordtoSpan)
                     textView_notification_restaurant.isVisible = true
                 }
@@ -208,12 +207,21 @@ class RestaurantsActivity : AppCompatActivity() {
     }
 }
 
-class RestaurantItem(val restaurant: Restaurant) : Item<GroupieViewHolder>() {
+class RestaurantItem(val restaurant: Restaurant, val findText: String? = null) : Item<GroupieViewHolder>() {
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
         val itemView = viewHolder.itemView
         Picasso.get().load(restaurant.profileImageUrl)
                 .into(itemView.imageView_restaurant)
         itemView.name_textview_restaurant.text = restaurant.name
+        if (findText != null) {
+            val WordtoSpan: Spannable = SpannableString(restaurant.name)
+            var startId =
+                    restaurant.name.toLowerCase().indexOf(findText)
+
+
+            WordtoSpan.setSpan(ForegroundColorSpan(Color.parseColor("#4AC3AB")), startId, startId + findText.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+            itemView.name_textview_restaurant.setText(WordtoSpan)
+        }
         itemView.textView_distance_res_row.text = (Math.ceil((Math.random() * 5) * 10) / 10).toString() + "km"
         val ref = FirebaseDatabase.getInstance().getReference("/menus/${restaurant.id}")
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
