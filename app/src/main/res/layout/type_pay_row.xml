@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:background="@color/white"
 
-        android:drawableLeft="@mipmap/ic_momo"
+        android:drawableLeft="@drawable/ic_momo"
 
         android:drawablePadding="10dp"
         android:gravity="center_vertical"

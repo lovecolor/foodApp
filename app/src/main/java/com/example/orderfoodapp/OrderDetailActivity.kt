@@ -80,7 +80,7 @@ class OrderDetailActivity : AppCompatActivity() {
                     =it.getValue(CartMeal::class.java)
                     adapter.add(CartActivity.CartRowItem(cartMeal!!,false))
                 }
-                adapter.add(FooterCartItem(order?.qty!!,order?.total!!-15000))
+                adapter.add(FooterCartItem(order?.qty!!,order?.total!!-15000,order?.distance!!))
                 val refUser=FirebaseDatabase.getInstance().getReference("/users/${order?.uid}")
                 refUser.addListenerForSingleValueEvent(object :ValueEventListener{
                     override fun onDataChange(snapshot: DataSnapshot) {

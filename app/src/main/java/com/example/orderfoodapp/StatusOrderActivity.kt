@@ -48,14 +48,7 @@ val USER_KEY="USER_KEY"
 
         verifyOrderIsPending()
         setUpAdapter()
-//        Handler(mainLooper).postDelayed(object : Runnable {
-//            override fun run() {
-//
-//
-//
-//            }
-//
-//        }, 2000)
+
 
 
     }

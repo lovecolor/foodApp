@@ -20,7 +20,7 @@ import java.util.HashMap
 
 
 class TypePayActivity : AppCompatActivity() {
-    var listIc: MutableList<Int> = mutableListOf(R.mipmap.ic_cash, R.mipmap.ic_atm, R.mipmap.ic_visa, R.mipmap.ic_momo, R.mipmap.ic_zlpay, R.mipmap.ic_vnpay, R.mipmap.ic_vtpay)
+    var listIc: MutableList<Int> = mutableListOf(R.drawable.ic_cash, R.drawable.ic_atm, R.drawable.ic_visa, R.drawable.ic_momo, R.drawable.ic_zlpay, R.drawable.ic_vnpay, R.drawable.ic_vtpay)
     var listText: MutableList<String> = mutableListOf("Cash", "ATM", "VISA", "MoMo", "ZaloPay", "VNPAY", "ViettelPay")
     var icMap = HashMap<String, Int>()
     val adapter=GroupAdapter<GroupieViewHolder>()
