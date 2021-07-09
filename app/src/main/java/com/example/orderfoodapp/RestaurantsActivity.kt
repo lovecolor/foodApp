@@ -122,6 +122,7 @@ class RestaurantsActivity : AppCompatActivity() {
     class LoopViewItem : Item<GroupieViewHolder>() {
 
         override fun bind(viewHolder: GroupieViewHolder, position: Int) {
+
             val adapter = ImagesAdapter(
                     mutableListOf(
                             R.drawable.background1,
