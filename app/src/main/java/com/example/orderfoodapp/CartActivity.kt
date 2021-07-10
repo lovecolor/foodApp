@@ -114,7 +114,7 @@ var totalTextView:TextView?=null
             val order = Order(
                     ref.key!!,
                     FirebaseAuth.getInstance().uid!!,
-                    MenuActivity.restaurant?.id!!,
+                    restaurant?.id!!,
                     currentDate,
                     "${time.hours}:${time.minutes}",
                     total + 15000,
@@ -229,10 +229,10 @@ var totalTextView:TextView?=null
 
 
                     adapter.add(FooterCartItem(qty, total, distance))
-
+                    adapter.add(CouponViewPageItem())
 
                     recyclerView?.adapter = adapter
-                    textView_total?.text = (total + 15000).toString() + "đ"
+                    textView_total?.text = (total + deliverCharge).toString() + "đ"
                     MenuActivity.textView_qty?.text = qty.toString() + " Meals"
                     MenuActivity.textView_total?.text = total.toString() + "đ"
 

@@ -103,6 +103,7 @@ class HistoryOrderRowItem(val order: Order,val restaurant: Restaurant) : Item<Gr
                         CartActivity.total+=(meal.qty*meal.price)
                         CartActivity.qty+=meal.qty
                     }
+
                     CartActivity.restaurant=restaurant
                     itemView.context.startActivity(intent)
                 }
