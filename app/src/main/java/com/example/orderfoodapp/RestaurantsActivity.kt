@@ -131,6 +131,7 @@ class RestaurantsActivity : AppCompatActivity() {
                             R.drawable.background4
                     )
             )
+
             viewHolder.itemView.loopviewpager_restaurant.adapter = adapter
         }
 
