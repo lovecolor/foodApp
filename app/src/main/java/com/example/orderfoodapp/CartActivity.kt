@@ -1,18 +1,18 @@
 package com.example.orderfoodapp
 
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.Paint
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.orderfoodapp.models.CartMeal
 import com.example.orderfoodapp.models.Coupon
@@ -29,12 +29,14 @@ import com.xwray.groupie.Item
 import kotlinx.android.synthetic.main.activity_cart.*
 import kotlinx.android.synthetic.main.address_layout_cart.*
 import kotlinx.android.synthetic.main.cart_row.view.*
+import kotlinx.android.synthetic.main.coupon_item.view.*
 import kotlinx.android.synthetic.main.coupon_view_pager.view.*
 import kotlinx.android.synthetic.main.footer_cart.*
 import kotlinx.android.synthetic.main.footer_cart.view.*
-import org.w3c.dom.Text
+import kotlinx.android.synthetic.main.list_coupon.view.*
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 class CartActivity : AppCompatActivity() {
     var textTypePay: String = "Cash"
@@ -59,13 +61,13 @@ var totalTextView:TextView?=null
         var typePayTextView:TextView?=null
         var deliverCharge:Int=0
         var backgroundErrConstraint:ConstraintLayout?=null
-        var containerMessConstraintLayout:ConstraintLayout?=null
+        var containerMessConstraintLayout:LinearLayout?=null
         var textViewMess:TextView?=null
         var textViewLabelCoupon:TextView?=null
         var textViewDiscount:TextView?=null
         var btnAddCoupon:Button?=null
         var btnRemoveCoupon:ImageButton?=null
-        var adapterCoupon:CouponsAdapter?=null
+        var adapterCoupon=GroupAdapter<GroupieViewHolder>()
 
     }
 
@@ -185,8 +187,8 @@ var totalTextView:TextView?=null
 
         distance = Math.ceil(Math.random() * 50) / 10
         adapter.add(FooterCartItem(qty, total, distance))
-        adapter.add(CouponViewPageItem())
-
+//        adapter.add(CouponViewPageItem())
+adapter.add(ListCoupon())
     }
 
     class CartRowItem(val cartMeal: CartMeal, val isHaveBtnCancel: Boolean) :
@@ -229,9 +231,9 @@ var totalTextView:TextView?=null
 
 
                     adapter.add(FooterCartItem(qty, total, distance))
-                    adapter.add(CouponViewPageItem())
+                    adapter.add(ListCoupon())
 
-                    recyclerView?.adapter = adapter
+
                     textView_total?.text = (total + deliverCharge).toString() + "đ"
                     MenuActivity.textView_qty?.text = qty.toString() + " Meals"
                     MenuActivity.textView_total?.text = total.toString() + "đ"
@@ -290,22 +292,17 @@ class FooterCartItem(val qty: Int, val total: Int, val distance: Double) : Item<
         return R.layout.footer_cart
     }
 }
-
-class CouponViewPageItem() : Item<GroupieViewHolder>() {
-
+class ListCoupon():Item<GroupieViewHolder>()
+{
     override fun bind(viewHolder: GroupieViewHolder, position: Int) {
 
-        val ref = FirebaseDatabase.getInstance().getReference("/coupons")
-        ref.addListenerForSingleValueEvent(object : ValueEventListener {
+        val ref=FirebaseDatabase.getInstance().getReference("/coupons")
+        ref.addListenerForSingleValueEvent(object :ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
-                val coupons = mutableListOf<Coupon>()
                 snapshot.children.forEach {
-                    val coupon = it.getValue(Coupon::class.java)
-                    coupons.add(coupon!!)
+                    val coupon=it.getValue(Coupon::class.java)
+                    CartActivity.adapterCoupon.add(CouponItem(coupon!!))
                 }
-                val adapter = CouponsAdapter(coupons)
-                CartActivity.adapterCoupon=adapter
-                viewHolder.itemView.viewpager_coupon_cart.adapter = adapter
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -313,11 +310,135 @@ class CouponViewPageItem() : Item<GroupieViewHolder>() {
             }
 
         })
-
+        val layoutManager = LinearLayoutManager(viewHolder.itemView.context, LinearLayoutManager.HORIZONTAL, false)
+        viewHolder.itemView.recycler_coupon.layoutManager=layoutManager
+        viewHolder.itemView.recycler_coupon.adapter=CartActivity.adapterCoupon
     }
 
     override fun getLayout(): Int {
-        return R.layout.coupon_view_pager
+        return R.layout.list_coupon
+    }
+
+}
+class CouponItem(val coupon: Coupon):Item<GroupieViewHolder>()
+{
+    override fun bind(viewHolder: GroupieViewHolder, position: Int) {
+        val itemView=viewHolder.itemView
+        fun err(mess: String) {
+            CartActivity.backgroundErrConstraint?.isVisible = true
+            CartActivity.textViewMess?.text = mess + " Please check the program rules for better understanding!"
+            CartActivity.textViewMess?.isVisible=true
+            CartActivity.containerMessConstraintLayout?.isVisible = true
+
+        }
+        fun choose(){
+            if ((coupon.typePay == "All" || coupon.typePay == CartActivity.typePayTextView?.text) && CartActivity.total >= coupon.minPrice) {
+
+                CartActivity.currentCoupon = coupon
+
+
+                var discount = 0
+                if (coupon.sale == 0) {
+                    discount = coupon.maxSale
+                } else {
+                    val currentDiscount = CartActivity.total * coupon.sale / 100
+                    if (currentDiscount > coupon.maxSale) {
+                        discount = coupon.maxSale
+                    } else
+                        discount = currentDiscount
+
+                }
+                if (discount > CartActivity.total) discount = CartActivity.total
+                var totalDiscounted = CartActivity.total - discount
+
+                CartActivity.totalTextView?.text = (CartActivity.total + CartActivity.deliverCharge).toString() + "đ"
+                CartActivity.totalDiscountedTextView?.text = (totalDiscounted + CartActivity.deliverCharge).toString() + "đ"
+                CartActivity.totalTextView?.paintFlags = Paint.STRIKE_THRU_TEXT_FLAG
+                CartActivity.textViewLabelCoupon?.isVisible = true
+                CartActivity.textViewDiscount?.text = "-" + discount.toString() + "đ"
+                CartActivity.textViewDiscount?.isVisible = true
+                CartActivity.btnAddCoupon?.setText(coupon.code)
+                CartActivity.btnRemoveCoupon?.isVisible = true
+                itemView.card_view_coupon_item.setBackgroundResource(R.drawable.rounded_btn_choose_coupon)
+                itemView.textView_choose_coupon_item.text="Cancel"
+
+            } else {
+
+
+                if (coupon.typePay != CartActivity.typePayTextView?.text && coupon.typePay != "All") {
+
+                    err("The discount code is not applicable for this payment method.")
+                } else {
+                    err("Order value does not meet the conditions of the program.")
+                }
+                 CartActivity.currentCoupon = null
+
+
+
+            }
+
+        }
+
+        fun cancel() {
+            CartActivity.currentCoupon = null
+            CartActivity.btnAddCoupon?.setText("add a promo")
+            CartActivity.textViewLabelCoupon?.isVisible = false
+
+            CartActivity.textViewDiscount?.isVisible = false
+
+
+
+            CartActivity.totalTextView?.apply {
+                paintFlags = paintFlags and Paint.STRIKE_THRU_TEXT_FLAG.inv()
+            }
+
+            CartActivity.totalTextView?.text = "Total"
+            CartActivity.totalDiscountedTextView?.text = (CartActivity.total + CartActivity.deliverCharge).toString() + "đ"
+            CartActivity.btnRemoveCoupon?.isVisible=false
+            itemView.card_view_coupon_item.setBackgroundResource(R.drawable.rounded_coupon_unchoose)
+            itemView.textView_choose_coupon_item.text="Choose"
+        }
+
+        itemView.textView_code_coupon_item.text=coupon.code.toUpperCase()
+        itemView.textView_name_coupon_item.text=coupon.title
+        itemView.textView_hsd_coupon_item.text=coupon.hsd
+        val currentCoupon=CartActivity.currentCoupon
+
+        if (currentCoupon=== coupon){
+
+            choose()
+
+        }
+        else{
+            itemView.card_view_coupon_item.setBackgroundResource(R.drawable.rounded_coupon_unchoose)
+            itemView.textView_choose_coupon_item.text="Choose"
+        }
+        if(currentCoupon==null)
+        {
+            cancel()
+        }
+        itemView.textView_choose_coupon_item.setOnClickListener {
+
+            if (currentCoupon=== coupon){
+
+                cancel()
+                CartActivity.adapterCoupon.notifyItemChanged(position)
+
+            }
+            else
+            {
+                choose()
+                CartActivity.adapterCoupon.notifyDataSetChanged()
+
+            }
+
+
+
+        }
+    }
+
+    override fun getLayout(): Int {
+        return R.layout.coupon_item
     }
 
 }
