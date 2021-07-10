@@ -26,10 +26,7 @@ class CouponsAdapter(private val coupons: MutableList<Coupon>) : LoopingPagerAda
             if ((coupon.typePay == "All" || coupon.typePay == CartActivity.typePayTextView?.text) && CartActivity.total >= coupon.minPrice) {
 
                 CartActivity.currentCoupon = coupon
-                if (isNotifi) {
-                    Log.d("isNotifi", isNotifi.toString())
-                    this.notifyDataSetChanged()
-                }
+
 
                 var discount = 0
                 if (coupon.sale == 0) {
@@ -53,6 +50,8 @@ class CouponsAdapter(private val coupons: MutableList<Coupon>) : LoopingPagerAda
                 CartActivity.textViewDiscount?.isVisible = true
                 CartActivity.btnAddCoupon?.setText(coupon.code)
                 CartActivity.btnRemoveCoupon?.isVisible = true
+                convertView.card_view_coupon_item.setBackgroundResource(R.drawable.rounded_btn_choose_coupon)
+                return true;
             } else {
 
                 if (coupon.typePay != CartActivity.typePayTextView?.text && coupon.typePay != "All") {
@@ -61,11 +60,11 @@ class CouponsAdapter(private val coupons: MutableList<Coupon>) : LoopingPagerAda
                 } else {
                     err("Order value does not meet the conditions of the program.")
                 }
-                if (!isNotifi) CartActivity.currentCoupon = null
+                if (!isNotifi)  CartActivity.currentCoupon = null
                 return false
 
             }
-            return true;
+
         }
 
         fun cancel(isNotifi: Boolean = true) {
@@ -86,13 +85,11 @@ if(isNotifi)
             CartActivity.btnRemoveCoupon?.isVisible=false
         }
 
-        if (currentCoupon?.code == coupon.code) {
-            val exact = choose(false)
+        if (CartActivity.currentCoupon?.code === coupon.code) {
 
-            if (exact) {
-                convertView.textView_choose_coupon_item.text = "Cancel"
-                convertView.card_view_coupon_item.setBackgroundResource(R.drawable.rounded_btn_choose_coupon)
-            }
+             choose(false)
+
+
 
 
         }

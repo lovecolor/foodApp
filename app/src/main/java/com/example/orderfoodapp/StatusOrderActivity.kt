@@ -62,12 +62,12 @@ val USER_KEY="USER_KEY"
 
         ref.addChildEventListener(object : ChildEventListener {
             override fun onChildAdded(snapshot: DataSnapshot, previousChildName: String?) {
-
-                val refDeliver = FirebaseDatabase.getInstance().getReference("/delivers/${snapshot.key!!}")
+                val driverId=snapshot.key
+                val refDeliver = FirebaseDatabase.getInstance().getReference("/delivers/${driverId}")
                 refDeliver.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
 
-                        if (snapshot.children.count() == 0 && !isFindSuccess) {
+                        if (snapshot.children.count() == 0 && !isFindSuccess &&driverId!=FirebaseAuth.getInstance().uid) {
 
                             refDeliver.setValue(order)
                             isFindSuccess = true

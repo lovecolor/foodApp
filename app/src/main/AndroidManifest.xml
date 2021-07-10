@@ -9,7 +9,11 @@
 
         android:supportsRtl="true"
         android:theme="@style/Theme.OrderfoodApp">
-        <activity android:name=".TypePayActivity"></activity>
+        <activity android:name=".TypePayActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".CartActivity" />
+        </activity>
         <activity android:name=".OrderPendingActivity" />
         <activity android:name=".FindRestaurantActivity" />
         <activity android:name=".OrderDetailActivity">
