@@ -30,7 +30,7 @@ import kotlinx.android.synthetic.main.activity_cart.*
 import kotlinx.android.synthetic.main.address_layout_cart.*
 import kotlinx.android.synthetic.main.cart_row.view.*
 import kotlinx.android.synthetic.main.coupon_item.view.*
-import kotlinx.android.synthetic.main.coupon_view_pager.view.*
+
 import kotlinx.android.synthetic.main.footer_cart.*
 import kotlinx.android.synthetic.main.footer_cart.view.*
 import kotlinx.android.synthetic.main.list_coupon.view.*
