@@ -6,6 +6,7 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.core.view.isVisible
 import com.example.orderfoodapp.models.CartMeal
 import com.example.orderfoodapp.models.Order
 import com.example.orderfoodapp.models.Restaurant
@@ -27,6 +28,7 @@ class HistoryOrderActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_history_order)
+        supportActionBar?.title="Your Orders"
         fetchData()
     }
 
@@ -40,6 +42,9 @@ class HistoryOrderActivity : AppCompatActivity() {
                 {
 
                     val order =snapshot.children.elementAt(i).getValue(Order::class.java) as Order
+                    val status=order.status
+
+                    if(status!="Cancelled"&&status!="Delivered") continue
                     val refRestaurant=FirebaseDatabase.getInstance().getReference("/restaurants/${order.restaurantId}")
                     refRestaurant.addListenerForSingleValueEvent(object :ValueEventListener{
                         override fun onDataChange(snapshot: DataSnapshot) {
@@ -98,6 +103,8 @@ class HistoryOrderRowItem(val order: Order,val restaurant: Restaurant) : Item<Gr
                         CartActivity.total+=(meal.qty*meal.price)
                         CartActivity.qty+=meal.qty
                     }
+
+                    CartActivity.restaurant=restaurant
                     itemView.context.startActivity(intent)
                 }
 
@@ -126,6 +133,11 @@ class HistoryOrderRowItem(val order: Order,val restaurant: Restaurant) : Item<Gr
             itemView.imageView_status_history_order.setColorFilter(Color.GRAY)
             itemView.textView_status_history_row.setTextColor(Color.GRAY)
             itemView.textView_name_restaurant_history_row.setTextColor(Color.BLACK)
+        }
+        if(order.status!="Cancelled"&&order.status!="Delivered")
+        {
+            itemView.imageView_status_history_order.isVisible=false
+            itemView.btn_bought_history_row.isVisible=false
         }
 
 

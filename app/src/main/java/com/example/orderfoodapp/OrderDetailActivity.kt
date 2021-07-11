@@ -29,7 +29,7 @@ class OrderDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order_detail)
-
+        supportActionBar?.title="Order Detail"
          restaurant=intent.getParcelableExtra<Restaurant>(RestaurantsActivity.RESTAURANT_KEY)
          order=intent.getParcelableExtra<Order>(HistoryOrderActivity.ORDER)
 
@@ -47,6 +47,7 @@ class OrderDetailActivity : AppCompatActivity() {
                         CartActivity.qty+=meal.qty
                         CartActivity.total+=(meal.qty*meal.price)
                     }
+                    CartActivity.restaurant=restaurant
                     startActivity(intent)
                 }
 
@@ -79,7 +80,7 @@ class OrderDetailActivity : AppCompatActivity() {
                     =it.getValue(CartMeal::class.java)
                     adapter.add(CartActivity.CartRowItem(cartMeal!!,false))
                 }
-                adapter.add(FooterCartItem(order?.qty!!,order?.total!!-15000))
+                adapter.add(FooterCartItem(order?.qty!!,order?.total!!-15000,order?.distance!!))
                 val refUser=FirebaseDatabase.getInstance().getReference("/users/${order?.uid}")
                 refUser.addListenerForSingleValueEvent(object :ValueEventListener{
                     override fun onDataChange(snapshot: DataSnapshot) {

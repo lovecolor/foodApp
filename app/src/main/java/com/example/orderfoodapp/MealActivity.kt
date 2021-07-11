@@ -17,7 +17,7 @@ class MealActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_meal)
-
+        supportActionBar?.title="Meal Information"
         meal=intent.getParcelableExtra<Meal>(MenuActivity.MEAL_KEY)
         loadData()
         imageButton_sub_meal.setOnClickListener {
@@ -51,6 +51,7 @@ val cartMeal=CartMeal(meal?.name!!,meal?.price!!,meal?.profileImageUrl!!,qty,edi
             CartActivity.total+=(meal?.price!!*qty)
             CartActivity.qty+=qty
             val intent=Intent(this,MenuActivity::class.java)
+            CartActivity.restaurant=MenuActivity.restaurant
             intent.putExtra(RestaurantsActivity.RESTAURANT_KEY,MenuActivity.restaurant)
             startActivity(intent)
 

@@ -24,7 +24,7 @@ class RegisterActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_register)
-
+        supportActionBar?.title="Register"
         register_button_register.setOnClickListener {
             performRegister()
         }

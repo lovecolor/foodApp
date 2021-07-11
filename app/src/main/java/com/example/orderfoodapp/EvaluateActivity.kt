@@ -5,6 +5,9 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.ImageButton
+import com.example.chatrealtime.models.User
+import com.example.orderfoodapp.models.Restaurant
 import com.google.firebase.database.FirebaseDatabase
 import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.activity_evaluate.*
@@ -15,36 +18,43 @@ class EvaluateActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_evaluate)
+        supportActionBar?.title="Evaluate"
         setUp()
     }
+
+
     private fun setUp()
     {
-        Picasso.get().load(StatusOrderActivity.infoShipper?.profileImageUrl).into(imageView_img_evalute)
-        textView_name_evalute.text=StatusOrderActivity.infoShipper?.username
-        button_submit_evaluate_rider.setOnClickListener {
+        val driver=intent.getParcelableExtra<User>(StatusOrderActivity.USER_KEY)
+        Picasso.get().load(driver?.profileImageUrl).into(imageView_img_evalute)
+        textView_name_evalute.text=driver?.username
 
-        }
         val mutableList=mutableListOf(
-            imageButton_rate_1,
-            imageButton_rate_2,
-            imageButton_rate_3,
-            imageButton_rate_4,
-            imageButton_rate_5
+                imageButton_rate_1,
+                imageButton_rate_2,
+                imageButton_rate_3,
+                imageButton_rate_4,
+                imageButton_rate_5
         )
+        fun setRate(){
+            for(j in 0..mutableList.size-1)
+            {
+                var color=Color.parseColor("#EEEEEE")
+                if(j<rate) color=Color.parseColor("#FFD700")
+                mutableList.get(j).setColorFilter(color)
+            }
+        }
         for(i in 0..mutableList.size-1){
             mutableList.get(i).setOnClickListener {
                 rate=i+1
-                for(j in 0..mutableList.size-1)
-                {
-                    var color=Color.parseColor("#EEEEEE")
-                    if(j<=i) color=Color.parseColor("#FFD700")
-                    mutableList.get(j).setColorFilter(color)
-                }
+                setRate()
             }
         }
         button_submit_evaluate_rider.setOnClickListener {
+
             rate=5
-            val restaurant=MenuActivity.restaurant
+            setRate()
+            val restaurant=intent.getParcelableExtra<Restaurant>(RestaurantsActivity.RESTAURANT_KEY)
             textView_title_evaluate.text="How were our restaurant serve?"
             Picasso.get().load(restaurant?.profileImageUrl).into(imageView_img_evalute)
             textView_name_evalute.text=restaurant?.name

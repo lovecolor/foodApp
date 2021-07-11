@@ -36,27 +36,27 @@
         app:layout_constraintTop_toBottomOf="@+id/editText_text_find_restaurant" />
 
     <ImageButton
+        android:paddingLeft="16dp"
         android:id="@+id/imageButton_back_find"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
+        android:layout_height="0dp"
         android:background="@color/white"
-        android:tint="@color/black"
         app:layout_constraintBottom_toBottomOf="@+id/editText_text_find_restaurant"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/editText_text_find_restaurant"
-        app:srcCompat="@drawable/ic_baseline_arrow_back_24" />
+        app:srcCompat="@drawable/ic_baseline_arrow_back_24"
+        app:tint="@color/black"
+        tools:ignore="VectorDrawableCompat" />
 
     <ImageButton
+        android:paddingRight="16dp"
         android:id="@+id/imageButton_reset_text_find"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
+        android:layout_height="0dp"
         android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/editText_text_find_restaurant"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/editText_text_find_restaurant"
-        app:srcCompat="@drawable/ic_cancel" />
+        app:srcCompat="@drawable/ic_cancel"
+        tools:ignore="VectorDrawableCompat" />
 </androidx.constraintlayout.widget.ConstraintLayout>

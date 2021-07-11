@@ -6,7 +6,7 @@
 
     <ImageView
         android:id="@+id/imageView_restaurant_menu"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="250dp"
         android:adjustViewBounds="true"
         app:layout_constraintEnd_toEndOf="parent"
@@ -16,6 +16,7 @@
         app:srcCompat="@drawable/backgounrd2" />
 
     <androidx.cardview.widget.CardView
+        app:cardCornerRadius="12dp"
         android:background="@color/white"
         android:id="@+id/cardView"
         android:layout_width="match_parent"
