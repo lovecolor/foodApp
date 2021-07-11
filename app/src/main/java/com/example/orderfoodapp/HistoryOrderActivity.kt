@@ -22,13 +22,15 @@ import kotlinx.android.synthetic.main.history_order_row.view.*
 
 class HistoryOrderActivity : AppCompatActivity() {
     val adapter = GroupAdapter<GroupieViewHolder>()
-    companion object{
-        val ORDER="ORDER"
+
+    companion object {
+        val ORDER = "ORDER"
     }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_history_order)
-        supportActionBar?.title="Your Orders"
+        supportActionBar?.title = "Your Orders"
         fetchData()
     }
 
@@ -38,18 +40,18 @@ class HistoryOrderActivity : AppCompatActivity() {
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
 
-                for(i in snapshot.children.count()-1 downTo 0 )
-                {
+                for (i in snapshot.children.count() - 1 downTo 0) {
 
-                    val order =snapshot.children.elementAt(i).getValue(Order::class.java) as Order
-                    val status=order.status
+                    val order = snapshot.children.elementAt(i).getValue(Order::class.java) as Order
+                    val status = order.status
 
-                    if(status!="Cancelled"&&status!="Delivered") continue
-                    val refRestaurant=FirebaseDatabase.getInstance().getReference("/restaurants/${order.restaurantId}")
-                    refRestaurant.addListenerForSingleValueEvent(object :ValueEventListener{
+                    if (status != "Cancelled" && status != "Delivered") continue
+                    val refRestaurant = FirebaseDatabase.getInstance()
+                        .getReference("/restaurants/${order.restaurantId}")
+                    refRestaurant.addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
-                            val restaurant=snapshot.getValue(Restaurant::class.java)
-                            adapter.add(HistoryOrderRowItem(order,restaurant!!))
+                            val restaurant = snapshot.getValue(Restaurant::class.java)
+                            adapter.add(HistoryOrderRowItem(order, restaurant!!))
                         }
 
                         override fun onCancelled(error: DatabaseError) {
@@ -62,7 +64,6 @@ class HistoryOrderActivity : AppCompatActivity() {
                 }
 
 
-
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -70,19 +71,19 @@ class HistoryOrderActivity : AppCompatActivity() {
             }
         })
         adapter.setOnItemClickListener { item, view ->
-            val intent= Intent(view.context,OrderDetailActivity::class.java)
-            val historyOrderRowItem=item as HistoryOrderRowItem
-            intent.putExtra(RestaurantsActivity.RESTAURANT_KEY,historyOrderRowItem.restaurant)
+            val intent = Intent(view.context, OrderDetailActivity::class.java)
+            val historyOrderRowItem = item as HistoryOrderRowItem
+            intent.putExtra(RestaurantsActivity.RESTAURANT_KEY, historyOrderRowItem.restaurant)
 
-            intent.putExtra(ORDER,historyOrderRowItem.order)
+            intent.putExtra(ORDER, historyOrderRowItem.order)
             view.context.startActivity(intent)
         }
         recycler_view_history_order.adapter = adapter
     }
 }
 
-class HistoryOrderRowItem(val order: Order,val restaurant: Restaurant) : Item<GroupieViewHolder>() {
-
+class HistoryOrderRowItem(val order: Order, val restaurant: Restaurant) :
+    Item<GroupieViewHolder>() {
 
 
     @SuppressLint("ResourceAsColor")
@@ -90,21 +91,21 @@ class HistoryOrderRowItem(val order: Order,val restaurant: Restaurant) : Item<Gr
 
         val itemView = viewHolder.itemView
         itemView.btn_bought_history_row.setOnClickListener {
-            val intent=Intent(itemView.context,CartActivity::class.java)
+            val intent = Intent(itemView.context, CartActivity::class.java)
             CartActivity.listMeal.clear()
-            CartActivity.total=0
-            CartActivity.qty=0
-            val ref=FirebaseDatabase.getInstance().getReference("/orderDetails/${order.id}")
-            ref.addListenerForSingleValueEvent(object :ValueEventListener{
+            CartActivity.total = 0
+            CartActivity.qty = 0
+            val ref = FirebaseDatabase.getInstance().getReference("/orderDetails/${order.id}")
+            ref.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    snapshot.children.forEach{
-                        val meal=it.getValue(CartMeal::class.java)
+                    snapshot.children.forEach {
+                        val meal = it.getValue(CartMeal::class.java)
                         CartActivity.listMeal.add(meal!!)
-                        CartActivity.total+=(meal.qty*meal.price)
-                        CartActivity.qty+=meal.qty
+                        CartActivity.total += (meal.qty * meal.price)
+                        CartActivity.qty += meal.qty
                     }
 
-                    CartActivity.restaurant=restaurant
+                    CartActivity.restaurant = restaurant
                     itemView.context.startActivity(intent)
                 }
 
@@ -134,10 +135,9 @@ class HistoryOrderRowItem(val order: Order,val restaurant: Restaurant) : Item<Gr
             itemView.textView_status_history_row.setTextColor(Color.GRAY)
             itemView.textView_name_restaurant_history_row.setTextColor(Color.BLACK)
         }
-        if(order.status!="Cancelled"&&order.status!="Delivered")
-        {
-            itemView.imageView_status_history_order.isVisible=false
-            itemView.btn_bought_history_row.isVisible=false
+        if (order.status != "Cancelled" && order.status != "Delivered") {
+            itemView.imageView_status_history_order.isVisible = false
+            itemView.btn_bought_history_row.isVisible = false
         }
 
 
