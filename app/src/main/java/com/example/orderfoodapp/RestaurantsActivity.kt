@@ -46,7 +46,7 @@ class RestaurantsActivity : AppCompatActivity() {
 
         verifyUserIsLoggedIn()
 
-        fetchOrderPeding()
+        fetchOrderPending()
         textView_notification_restaurant.setOnClickListener {
             val intent = Intent(this, OrderPendingActivity::class.java)
             startActivity(intent)
@@ -88,7 +88,7 @@ class RestaurantsActivity : AppCompatActivity() {
 
     }
 
-    private fun fetchOrderPeding() {
+    private fun fetchOrderPending() {
         OrderPendingActivity.listOrder.clear()
         val ref = FirebaseDatabase.getInstance().getReference("/orders/${FirebaseAuth.getInstance().uid}")
         ref.addListenerForSingleValueEvent(object : ValueEventListener {
